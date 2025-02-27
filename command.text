@@ -1,0 +1,46 @@
+SHOWDATABASES;
+CREATE DATABASE databasename;
+
+#Backend
+npm init -y
+
+npm i nodemon
+
+วาง dependencies
+
+    "@prisma/client": "^5.11.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.11.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+
+npm install
+
+วางตรง scripts # "start": "nodemon index.js",
+
+npx prisma init
+
+แก้ไข schema.prisma #provider = "mysql"
+
+แก้ไข .env #DATABASE_URL=mysql://root:6521602039@localhost:3307/test
+
+เข้า dbeaver สร้างฐานข้อมูลใช้ sql
+
+npx prisma db pull
+
+npx prisma generate
+
+npx prisma migrate dev --name update_customer_schema
+
+สร้าง folder controllers สร้าง files customers.js
+
+สร้าง folder routes สร้าง file api.js
+สร้าง folder ssl เอา cert กับ มาใส่
+สร้างไฟล์ index.js
+
+npx nodemon npm start หลังจากเเก้ไฟล์ customer เเล้ว
