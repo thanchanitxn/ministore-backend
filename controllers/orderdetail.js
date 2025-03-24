@@ -1,7 +1,7 @@
 const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
-//insert a new product
+//insert a new orderdetail
 const createOrderdetail = async (req, res) => {
     const {order_id,product_id, quantity, unit_price} = req.body;
     try{
@@ -27,12 +27,12 @@ const createOrderdetail = async (req, res) => {
     }
 };
 
-//get all products
+//get all orderdetails
 const getOrderdetails = async (req, res) => {
     const custs = await prisma.orderdetail.findMany();
     res.json(custs);
 }
-//get  one product by id
+//get  one orderdetail by id
 const getOrderdetail = async (req, res) => {
     const {id} = req.params;
     try{
@@ -49,7 +49,7 @@ const getOrderdetail = async (req, res) => {
     }
 }
 
-//delete a product by id
+//delete a orderdetail by id
 const deleteOrderdetail = async (req, res) => {
     const {id} = req.params;
     try{
@@ -73,7 +73,7 @@ const deleteOrderdetail = async (req, res) => {
     }
 }
 
-//update a customer by id
+//update a orderdetail by id
 const updateOrderdetail = async (req, res) => {
     const {order_id,product_id, quantity, unit_price} = req.body;
     const {id} = req.params;

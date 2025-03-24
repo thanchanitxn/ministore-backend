@@ -1,7 +1,7 @@
 const {PrismaClient} = require('@prisma/client');
 const prisma = new PrismaClient();
 
-//insert a new customer
+//insert a new user
 const createUser = async (req, res) => {
     const { UserName, Password, Status, Role} = req.body;
     try{
@@ -27,12 +27,12 @@ const createUser = async (req, res) => {
     }
 };
 
-//get all customers
+//get all users
 const getUsers = async (req, res) => {
     const custs = await prisma.users.findMany();
     res.json(custs);
 }
-//get  one customer by id
+//get  user by id
 const getUser = async (req, res) => {
     const {id} = req.params;
     try{
@@ -49,7 +49,7 @@ const getUser = async (req, res) => {
     }
 }
 
-//delete a customer by id
+//delete a user by id
 const deleteUser = async (req, res) => {
     const {id} = req.params;
     try{
@@ -73,7 +73,7 @@ const deleteUser = async (req, res) => {
     }
 }
 
-//update a customer by id
+//update a user by id
 const updateUser = async (req, res) => {
     const { UserName, Password, Status, Role} = req.body;
     const {id} = req.params;

@@ -27,7 +27,7 @@ npx prisma init
 
 แก้ไข schema.prisma #provider = "mysql"
 
-แก้ไข .env #DATABASE_URL=mysql://root:6521602039@localhost:3307/test
+แก้ไข .env #DATABASE_URL=mysql://root:6521602039@localhost:3307/teststore
 
 เข้า dbeaver สร้างฐานข้อมูลใช้ sql
 
