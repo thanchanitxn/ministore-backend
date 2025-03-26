@@ -1,24 +1,26 @@
 const {PrismaClient} = require('@prisma/client');
+const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
 
 //insert a new user
 const createUser = async (req, res) => {
-    const { UserName, Password, Status, Role} = req.body;
-    try{
+    const { UserName, Password, Status, Role } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(Password, 10);
         const cust = await prisma.users.create({
             data: {
                 UserName,
-                Password,
+                Password: hashedPassword,
                 Status,
                 Role
             }
         });
         res.status(200).json({
             status: 'ok',
-            message:`User with id ${cust.UserID} is created successfully`
+            message: `User with id ${cust.UserID} is created successfully`
         });
 
-    }catch (err){
+    } catch (err) {
         res.status(500).json({
             status: 'error',
             message: 'Something went wrong',
@@ -26,6 +28,7 @@ const createUser = async (req, res) => {
         });
     }
 };
+
 
 //get all users
 const getUsers = async (req, res) => {
@@ -75,32 +78,38 @@ const deleteUser = async (req, res) => {
 
 //update a user by id
 const updateUser = async (req, res) => {
-    const { UserName, Password, Status, Role} = req.body;
-    const {id} = req.params;
+    const { UserName, Password, Status, Role } = req.body;
+    const { id } = req.params;
     const data = {};
+
     if (UserName) data.UserName = UserName;
-    if (Password) data.Password = Password;
+    if (Password) data.Password = await bcrypt.hash(Password, 10);
     if (Status) data.Status = Status;
     if (Role) data.Role = Role;
 
-    if (Object.keys(data).length === 0){
-        res.status(400).json({status: 'error' ,message: 'No data to update'});
+    if (Object.keys(data).length === 0) {
+        return res.status(400).json({ status: 'error', message: 'No data to update' });
     }
-    try{
+
+    try {
         const cust = await prisma.users.update({
             data,
             where: {
                 UserID: Number(id)
             }
         });
-        res.status(200).json({status: 'ok', message: `Customer with id ${cust.UserID} is updated successfully`,user: cust});
-    }catch(err){
-        if (err.code == 'P2002') {
+        res.status(200).json({
+            status: 'ok',
+            message: `Customer with id ${cust.UserID} is updated successfully`,
+            user: cust
+        });
+    } catch (err) {
+        if (err.code === 'P2002') {
             res.status(404).json({
                 status: 'error',
                 message: 'Email already exists'
             });
-        } else if (err.code == 'P2025') {
+        } else if (err.code === 'P2025') {
             res.status(404).json({
                 status: 'error',
                 message: `Customer with id ${id} not found`
@@ -113,7 +122,7 @@ const updateUser = async (req, res) => {
             });
         }
     }
-}
+};
 module.exports = {
     createUser,getUsers,getUser,deleteUser,updateUser
 };
